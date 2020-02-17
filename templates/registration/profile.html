@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %} {% block head_title %}{{profile.author}} | {{block.super}}{% endblock head_title %} {% block content %}
+
+<article class="resume-wrapper card" style="margin-top: 30px;">
+    <div class="text-left">
+        <header class="resume-header pt-4 pt-md-0">
+            <div class="media flex-column flex-md-row">
+                {% if profile.avatar %}
+                <img class="mr-3 img-fluid picture " src="/media/{{ profile.avatar }}" alt=""> {% if request.user == profile.author %}
+                <a href="{% url 'profile_edit' slug=profile.slug %}" class="editicon"><i class="far fa-edit "></i> Edit</a> {% endif %} {% else %}
+                <img class="mr-3 img-fluid picture  " src="/media/profile.jpg " alt=""> {% if request.user == profile.author %}
+                <a href="{% url 'profile_edit' slug=profile.slug %}" class="editicon"><i class="far fa-edit "></i> Edit</a> {% endif %} {% endif %}
+
+                <div class="media-body p-4 d-flex flex-column flex-md-row mx-auto mx-lg-0 ">
+                    <div class="primary-info ">
+                        <h1 class="name mt-0 mb-1 text-uppercase text-uppercase ">{{profile.author}}</h1>
+                        <div class="title mb-3 "><a href=" ">Type Your Position</a></div>
+                        <ul class="list-unstyled ">
+                            {% if profile.email %}
+                            <li class="mb-2 "><a href="# "><i class="far fa-envelope fa-fw mr-2 " data-fa-transform="grow-3"></i>{{profile.email}}</a></li>
+                            {% else %}
+                            <li class="mb-2 "><a href="# "><i class="far fa-envelope fa-fw mr-2 " data-fa-transform="grow-3"></i>Submit your email</a></li>
+                            {% endif %} {% if profile.website %}
+                            <li><a href="# "><span class="fa-container text-center mr-2 "><i class="fas fa-globe "></i></span>{{profile.website}}</a></li>
+                            {% else %}
+                            <li><a href="# "><span class="fa-container text-center mr-2 "><i class="fas fa-globe "></i></span>Submit your website</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                    <div class="secondary-info ml-md-auto mt-2 ">
+                        <ul class="resume-social list-unstyled ">
+                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-linkedin-in fa-fw "></i></span>linkedin.com/in/{{profile.author}}</a></li>
+                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-github-alt fa-fw "></i></span>github.com/{{profile.author}}</a></li>
+                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-codepen fa-fw "></i></span>codepen.io/{{profile.author}}</a></li>
+                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-instagram "></i></span>instagram.com/{{profile.author}}/</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="resume-body p-5">
+            <section class="resume-section summary-section mb-5 ">
+                <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3 ">Biography</h2>
+                {% if profile.bio %}
+                <div class="resume-section-content">
+                    <p class="mb-0">{{profile.bio}}</p>
+                </div>
+                {% else %}
+                <p class="mb-0">Please write about yourself...<a href="{% url 'profile_edit' slug=profile.slug %}" class="btn btn-primary">Start</a></p>
+                {% endif %}
+            </section>
+        </div>
+
+    </div>
+</article>
+{% endblock %}

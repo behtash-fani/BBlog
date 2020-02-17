@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% load static %} {% load markdown_deux_tags %} {% block content %} {% if posts %}
+<div class="col-8" style="margin-top: 23px;">
+    {% for post in posts %}
+    <div class="card mb-4">
+        {% if post.image %}
+        <img class="card-img-top" src="/media/{{ post.image }}" alt="Card image cap"> {% else %}
+        <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> {% endif %}
+        <div class="card-body">
+            <h2 class="card-title"><a href="{{ post.get_absolute_url }}">{{post.title}}</a></h2>
+            <p class="content-markdown post-detail-item">{{post.content|truncatechars:120}}</p>
+            <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+        </div>
+        <div class="card-footer text-muted">
+            created at {{post.timestamp|timesince}} ago {% if post.author.get_full_name %}
+            <span class="lead">by {{post.author.get_full_name }}</span> {% else %}
+            <span class="lead">by <a href="{% url 'user_profile' author=post.author %}">{{post.author}}</a></span> {% endif %}
+        </div>
+    </div>
+    {% endfor %} {% include 'pagination.html' %}
+</div>
+
+{% else %}
+<div class="col-8" style="margin-top: 23px;">
+    <div class="card mb-4">
+        <h2 style="text-align: center;margin: 0 auto;padding-top: 20px;">No Post To Show</h2>
+        <a href="{% url 'post_create' %}" class="btn btn-primary">Send New Post</a>
+    </div>
+</div>
+{% endif %} {% include 'sidebar.html' %} {% endblock content %}

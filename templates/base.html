@@ -1,0 +1,52 @@
+{% load static %}
+<html>
+
+<head>
+    <title>
+        {% block head_title %}My Blog{% endblock head_title %}
+    </title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Material+Icons">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-material-design.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}"> {% block head_extra %}{% endblock head_extra %}
+    <!-- <link id="theme-style" rel="stylesheet" href="{% static '/css/profile/pillar-6.css' %}"> -->
+</head>
+
+<body>
+    {% include 'nav.html' %} {% include 'messages_display.html' %}
+    <div class="container">
+        <div class="row">
+            {% block content %} {% endblock content %}
+        </div>
+    </div>
+    {% include "footer.html" %}
+
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap-material-design.js' %}"></script>
+    <script src="{% static 'js/fontawesome.js' %}"></script>
+
+
+    <script src="{% static 'js/marked.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".content-markdown").each(function() {
+                var content = $(this).text()
+                var markedContent = marked(content)
+                $(this).html(markedContent);
+            })
+            $(".post-detail-item img").each(function() {
+                $(this).addClass("img-fluid");
+            })
+            $('a').each(function() {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active');
+                    $(this).parents('li').addClass('active');
+                }
+            });
+        })
+    </script>
+</body>
+
+</html>

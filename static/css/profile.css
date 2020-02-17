@@ -1,0 +1,55 @@
+.resume-wrapper {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.resume-header {
+    background: #80425F;
+    color: rgba(255, 255, 255, 0.9);
+    height: 220px;
+}
+
+@media (min-width: 768px) {
+    .pt-md-0,
+    .py-md-0 {
+        padding-top: 0 !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .flex-md-row {
+        flex-direction: row !important;
+    }
+}
+
+.resume-header .picture {
+    width: 220px;
+}
+
+.media.flex-column.flex-md-row a {
+    color: #FFF;
+    font-size: 1.1rem;
+}
+
+h2.resume-section-title.text-uppercase.font-weight-bold.pb-3.mb-3 {
+    color: #80425f;
+    border-bottom: 2px solid #80425f;
+}
+
+.text-white {
+    color: #FFF;
+}
+
+.resume-header .picture {
+    position: relative;
+}
+
+.editicon {
+    font-size: 14px !important;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(142, 141, 141);
+    padding: 3px;
+    border-radius: 2px;
+}

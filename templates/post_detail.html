@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block head_title %}{{instance.title}} | {{block.super}}{% endblock head_title %} {% block content %}
+
+<div class="col-8">
+    <h1 class="mt-4">{{instance.title}}</h1>
+    {% if instance.author.get_full_name %}
+    <p class="lead">by {{instance.author.get_full_name }}</p>
+    {% else %}
+    <p class="lead">by {{instance.author}}</p>
+    {% endif %}
+    <hr>
+    <p>{%if instance.draft %}<span style="color: red;">Draft |</span>{%endif%} {{instance.publish}} | {{instance.category.title}}</p>
+    <hr> {% if instance.image %}
+    <img class="img-fluid rounded" src="/media/{{instance.image}}" alt=""> {% else %}
+    <img class="img-fluid rounded" src="http://placehold.it/900x300" alt=""> {% endif %}
+    <hr>
+    <p class="lead content-markdown post-detail-item">{{instance.content}}</p>
+    <hr> {% if request.user == instance.author %}
+    <a href="{% url 'post_update' instance.slug %}" class="btn btn-primary">Update</a>
+    <a href="{% url 'post_delete' id=instance.id %}" class="btn btn-danger" style="float: right;">Delete</a>
+    <hr> {% endif %}
+</div>
+{% include 'sidebar.html' %} {% endblock content %}
