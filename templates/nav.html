@@ -1,27 +1,30 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="/">MyBlog</a>
-        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span> -->
         <li class="nav-item">
             <a class="nav-link" href="/admin/">Admin</a>
         </li>
+        <a class="nav-link btn btn-outline-success" href="{% url 'post_create' %}">write your article</a>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav" style="margin-left: auto;">
-                {% if categories %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Categories</a>
-                    <div class="dropdown-menu">
-                        {% for c in categories %}
-                        <a class="dropdown-item" href="{% url 'category_detail' c.slug %}">{{c.title}}</a> {% endfor %}
-                    </div>
-                </li>
-                {% endif %} {% if user.is_authenticated %}
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{request.user}}
-        </a>
+                        {% if profile.avatar %}
+                        <img class="mr-3 img-fluid rounded-circle" src="/media/{{ profile.avatar }}" alt="" width="36" height="36"> 
+                        {{request.user}}
+                        {% else %}
+                        {% if profile.gender == 'Female' %}
+                        <img class="mr-3 img-fluid rounded-circle" src="{% static 'image/female_avatar.jpg'%}" alt="" width="36" height="36">
+                        {{request.user}}
+                        {% else %}
+                        <img class="mr-3 img-fluid rounded-circle" src="{% static 'image/male_avatar.jpg'%}" alt="" width="36" height="36">
+                        {{request.user}}
+                        {% endif %}
+                        {% endif %}
+                    </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'post_create' %}">New Post</a>
                         <a class="dropdown-item" href="{% url 'user_profile' author=request.user %}">Profile</a>

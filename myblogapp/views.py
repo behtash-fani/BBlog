@@ -61,6 +61,8 @@ def profile_edit(request,slug=None):
 
 def post_list(request):
     categories = Category.objects.all()
+    user = request.user
+    profile = Profile.objects.get(author__username=user)
     instance = get_object_or_404(Post)
     try:
         post_list = Post.objects.filter(draft=False).filter(publish__lte = timezone.now()).order_by('-timestamp')
@@ -78,7 +80,8 @@ def post_list(request):
     context = {
             'posts' : posts,
             'categories' : categories,
-            'author' : author
+            'author' : author,
+            'profile' : profile
         }
     return render(request, 'post_list.html', context)
 

@@ -4,10 +4,18 @@
     <div class="text-left">
         <header class="resume-header pt-4 pt-md-0">
             <div class="media flex-column flex-md-row">
-                {% if profile.avatar %}
-                <img class="mr-3 img-fluid picture " src="/media/{{ profile.avatar }}" alt=""> {% if request.user == profile.author %}
-                <a href="{% url 'profile_edit' slug=profile.slug %}" class="editicon"><i class="far fa-edit "></i> Edit</a> {% endif %} {% else %}
-                <img class="mr-3 img-fluid picture  " src="/media/profile.jpg " alt=""> {% if request.user == profile.author %}
+                {% if profile.avatar %} 
+                    <img class="mr-3 img-fluid picture " src="/media/{{ profile.avatar }}" alt=""> 
+                    {% if request.user == profile.author %}
+                    <a href="{% url 'profile_edit' slug=profile.slug %}" class="editicon"><i class="far fa-edit "></i> Edit</a> 
+                    {% endif %} 
+                {% else %}
+                {% if profile.gender == 'Female' %}
+                    <img class="mr-3 img-fluid picture " src="{% static 'image/female_avatar.jpg'%}" alt="">
+                {% else %}
+                    <img class="mr-3 img-fluid picture " src="{% static 'image/male_avatar.jpg'%}" alt="" >
+                {% endif %}
+                {% if request.user == profile.author %}
                 <a href="{% url 'profile_edit' slug=profile.slug %}" class="editicon"><i class="far fa-edit "></i> Edit</a> {% endif %} {% endif %}
 
                 <div class="media-body p-4 d-flex flex-column flex-md-row mx-auto mx-lg-0 ">
