@@ -5,6 +5,7 @@
 blog/media
 media
 blog/__pycache__
+myblogapp/__pycache__
 MANIFEST
 dist/
 docs/_build/
