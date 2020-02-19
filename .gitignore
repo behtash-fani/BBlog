@@ -2,6 +2,7 @@
 *.pot
 *.py[co]
 .tox/
+media
 __pycache__
 MANIFEST
 dist/
@@ -15,4 +16,3 @@ tests/report/
 db.sqlite3
 .vscode
 .DS_Store
-media/
