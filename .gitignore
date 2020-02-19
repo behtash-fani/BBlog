@@ -2,6 +2,7 @@
 *.pot
 *.py[co]
 .tox/
+blog/media
 media
 __pycache__
 MANIFEST
