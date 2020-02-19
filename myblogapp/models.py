@@ -33,6 +33,12 @@ class Profile(models.Model):
     avatar = models.FileField(null=True, blank=True)
     website = models.URLField(blank=True, null=True)
     bio = models.TextField(blank=True,null=True)
+    gender_choice = (
+            ('Female', 'Female'),
+            ('Male', 'Male'),
+        )
+    gender = models.CharField(max_length=30, blank=True, null=True, choices=gender_choice)
+
 
 
     def __str__(self):
