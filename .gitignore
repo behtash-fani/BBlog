@@ -4,7 +4,7 @@
 .tox/
 blog/media
 media
-__pycache__
+blog/__pycache__
 MANIFEST
 dist/
 docs/_build/
