@@ -47,7 +47,7 @@ def save_profile(sender, **kwargs):
         p = Profile(author = kwargs['instance'])
         p.slug = slugify(p.author)
         p.email = User.objects.get(username = p.author).email
-        p.save()
+        p.save()    
 
 post_save.connect(save_profile , sender=settings.AUTH_USER_MODEL)
 
