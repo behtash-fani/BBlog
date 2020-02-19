@@ -17,5 +17,5 @@ tests/report/
 db.sqlite3
 .vscode
 .DS_Store
-settings.py
+blog/settings.py
 
