@@ -1,4 +1,8 @@
-{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %} {% block head_title %}{{profile.author}} | {{block.super}}{% endblock head_title %} {% block content %}
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% block head_title %}{{profile.author}} | {{block.super}}{% endblock head_title %} 
+{% block content %}
 
 <article class="resume-wrapper card" style="margin-top: 30px;">
     <div class="text-left">
@@ -32,7 +36,6 @@
                             {% else %}
                             <li><a href="# "><span class="fa-container text-center mr-2 "><i class="fas fa-globe "></i></span>Submit your website</a></li>
                             {% endif %}
-
                         </ul>
                     </div>
                     <div class="secondary-info ml-md-auto mt-2 ">

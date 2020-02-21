@@ -32,3 +32,34 @@ li.nav-item {
 li a.nav-link {
     color: #bdc3c7;
 }
+.dropdown-username h5
+{
+    line-height: 5px !important;
+    padding-top: 10px !important;
+    color:#202124;
+}
+
+.dropdown-username p
+{
+    color: #989696;
+    padding-top: 5px;
+    font-size: 14px;
+} 
+.dropdown-avatar
+{
+    display: block;
+    width:50%;
+    margin:0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #ccc;
+}
+.logoutbtn
+{
+    display: block;
+}
+.manage-acc-btn
+{
+    border-radius: 30px;
+    margin-top: 10px;
+}

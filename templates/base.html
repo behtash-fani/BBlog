@@ -8,15 +8,20 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Material+Icons">
     <link rel="stylesheet" href="{% static 'css/bootstrap-material-design.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}"> {% block head_extra %}{% endblock head_extra %}
-    <!-- <link id="theme-style" rel="stylesheet" href="{% static '/css/profile/pillar-6.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}"> 
+    {% block head_extra %}
+    {% endblock head_extra %}
 </head>
 
 <body>
-    {% include 'nav.html' %} {% include 'category_navbar.html' %} {% include 'messages_display.html' %}
+    {% include 'nav.html'%}
+    {% include 'category_navbar.html' %}
+    {% include 'messages_display.html' %}
+    
     <div class="container">
         <div class="row">
-            {% block content %} {% endblock content %}
+            {% block content %} 
+            {% endblock content %}
         </div>
     </div>
     {% include "footer.html" %}
@@ -43,6 +48,7 @@
                 if ($(this).prop('href') == window.location.href) {
                     $(this).addClass('active');
                     $(this).parents('li').addClass('active');
+                    $('.manage-acc-btn').removeClass('active');
                 }
             });
         })

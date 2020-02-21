@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.response import TemplateResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from .models import Post,Category,Profile
@@ -10,7 +11,6 @@ from .forms import PostForm,ProfileForm
 from django.utils.text import slugify
 from django.core.mail import send_mail
 from django.conf import settings
-
 
 
 def category_list(request):
@@ -28,41 +28,40 @@ def category_detail(request, category_slug):
     context={
         'category': category,
         'categories':categories,
-        'posts' : posts
+        'posts' : posts,
     }
     return render(request, 'post_list.html', context)
 
-
 def user_profile(request, author):
-    profile = Profile.objects.get(author__username=author)
+    profile = Profile.objects.get(author__username=author) 
     context ={
         'profile' : profile
     }
     return render(request, 'registration/profile.html', context)
 
 def profile_edit(request,slug=None):
-    instance = get_object_or_404(Profile, slug=slug)
+    profile = get_object_or_404(Profile, slug=slug)
     currentUser = request.user
     # or request.user.is_superuser
-    if not (instance.author == currentUser):
+    if not (profile.author == currentUser):
         raise Http404
     else : 
-        form = ProfileForm(request.POST or None, request.FILES or None, instance=instance)
+        form = ProfileForm(request.POST or None, request.FILES or None, instance=profile)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
+            profile = form.save(commit=False)
+            profile.save()
             messages.success(request , "Your changes have been made")
-            return HttpResponseRedirect(instance.get_absolute_url())
+            return HttpResponseRedirect(profile.get_absolute_url())
     context={
-        'instance' : instance,
+        'profile' : profile,
         'form' : form
     }
     return render(request, 'registration/profile_edit.html',context)
 
+
 def post_list(request):
     categories = Category.objects.all()
-    user = request.user
-    profile = Profile.objects.get(author__username=user)
+    # user = request.user
     instance = get_object_or_404(Post)
     try:
         post_list = Post.objects.filter(draft=False).filter(publish__lte = timezone.now()).order_by('-timestamp')
@@ -81,7 +80,6 @@ def post_list(request):
             'posts' : posts,
             'categories' : categories,
             'author' : author,
-            'profile' : profile
         }
     return render(request, 'post_list.html', context)
 
@@ -93,14 +91,14 @@ def post_detail(request, slug=None):
     context = {
         'title' : instance.title,
         'instance' : instance,
-        'categories' : categories
+        'categories' : categories,
     }
     return render(request, 'post_detail.html', context)
 
 def post_create(request):
+    currentUser = request.user
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
-    currentUser = request.user
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -109,7 +107,7 @@ def post_create(request):
         return HttpResponseRedirect(instance.get_absolute_url())
         messages.success(request , "Your new post have been made")
     context = {
-        'form' : form
+        'form' : form,
     }
     return render(request, 'post_create.html', context)
 
@@ -127,7 +125,7 @@ def post_update(request, slug=None):
     context = {
         'title' : instance.title,
         'instance' : instance,
-        'form' : form
+        'form' : form,
     }
     return render(request, 'post_update.html', context)
 

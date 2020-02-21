@@ -25,11 +25,31 @@
                         {% endif %}
                         {% endif %}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'post_create' %}">New Post</a>
-                        <a class="dropdown-item" href="{% url 'user_profile' author=request.user %}">Profile</a>
+                    <div class="dropdown-menu w-auto p-3" style="padding-top : 0px !important;" aria-labelledby="navbarDropdownMenuLink">
+                        {% if profile.avatar %}
+                        <a href="#">
+                            <img class="img-fluid rounded-circle dropdown-avatar" src="/media/{{ profile.avatar }}" alt="">
+                        </a>
+                        {% else %}
+                        {% if profile.gender == 'Female' %}
+                            <img class="mr-3 img-fluid rounded-circle dropdown-avatar" src="{% static 'image/female_avatar.jpg'%}" alt="" width="36" height="36">
+                        {% else %}
+                            <img class="mr-3 img-fluid rounded-circle dropdown-avatar" src="{% static 'image/male_avatar.jpg'%}" alt="" width="36" height="36">
+                        {% endif %}
+                        {% endif %}
+                        <span class="dropdown-username" style="padding-top : 0px !important;">
+                            {% if profile.author.get_full_name %}
+                            <a href="{% url 'user_profile' author=profile.author %}"><h5 class="text-center">{{profile.author.get_full_name}}</h5></a>
+                            {% else %}
+                            <h4 class="text-center">{{profile.author}}</h4>
+                            {% endif %}
+                            <p class="text-center">{{profile.email}}</p>
+                        </span>
+                        <!-- {% if request.user == profile.author %} -->
+                        <a class="btn btn-raised manage-acc-btn" href="{% url 'profile_edit' slug=profile.slug %}">Manage Your Account</a>
+                        <!-- {% endif %} -->
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'auth_logout' %}">Logout</a>
+                        <a class="btn btn-raised btn-danger logoutbtn" href="{% url 'auth_logout' %}">Logout</a>
                     </div>
                 </li>
                 {% else %}
