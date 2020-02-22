@@ -18,5 +18,6 @@
     <a href="{% url 'post_update' instance.slug %}" class="btn btn-primary">Update</a>
     <a href="{% url 'post_delete' id=instance.id %}" class="btn btn-danger" style="float: right;">Delete</a>
     <hr> {% endif %}
+    
 </div>
 {% include 'sidebar.html' %} {% endblock content %}

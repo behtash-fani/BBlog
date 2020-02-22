@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from myblogapp.models import Post,Category,Profile
+from myblogapp.models import Post,Category,Profile,Controlpanel
 # from pagedown.widgets import AdminPagedownWidget
 
 
@@ -19,6 +19,7 @@ class ProfileAdmin(admin.ModelAdmin):
 admin.site.register(Post,PostAdmin)
 admin.site.register(Category,CatAdmin)
 admin.site.register(Profile,ProfileAdmin)
+admin.site.register(Controlpanel)
 
 
 

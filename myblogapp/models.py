@@ -96,4 +96,12 @@ def pre_save_post_reciever(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_post_reciever, sender=Post)
 
 
+class Controlpanel(models.Model):
+    profile_name=models.CharField(max_length=255,blank=True)
+    favicon = models.FileField(null=True, blank=True)
+    logo = models.FileField(null=True, blank=True)
+    logo_width = models.IntegerField(blank=True)
 
+
+    def __str__(self):
+        return self.profile_name

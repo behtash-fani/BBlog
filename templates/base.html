@@ -9,13 +9,15 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap-material-design.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/profile.css' %}"> 
+    {% if blog_settings.favicon %}
+    <link rel="shortcut icon" href='/media/{{blog_settings.favicon}}' />
+    {% endif %}
     {% block head_extra %}
     {% endblock head_extra %}
 </head>
 
 <body>
     {% include 'nav.html'%}
-    {% include 'category_navbar.html' %}
     {% include 'messages_display.html' %}
     
     <div class="container">

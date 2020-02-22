@@ -1,7 +1,27 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg top-bar">
     <div class="container">
-        <a class="navbar-brand" href="/">MyBlog</a>
+        {% if blog_settings.logo %}
+            {% if blog_settings.logo_width %}
+            <img src="/media/{{blog_settings.logo}}" alt="" width="{{blog_settings.logo_width}}px">
+            {% else %}
+            <img src="/media/{{blog_settings.logo}}" alt="">
+            {% endif %}
+        {% else %}
+            <a class="navbar-brand" href="/">MyBlog</a>
+        {% endif %}
+        {% if categories %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categories
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            {% for c in categories %}
+              <a class="dropdown-item" href="{% url 'category_detail' c.slug %}">{{c.title}}</a>
+            {% endfor %}
+            </div>
+          </li>
+          {% endif %}
         <li class="nav-item">
             <a class="nav-link" href="/admin/">Admin</a>
         </li>
@@ -11,21 +31,18 @@
             <ul class="navbar-nav" style="margin-left: auto;">
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle userprofile" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% if profile.avatar %}
                         <img class="mr-3 img-fluid rounded-circle" src="/media/{{ profile.avatar }}" alt="" width="36" height="36"> 
-                        {{request.user}}
                         {% else %}
                         {% if profile.gender == 'Female' %}
                         <img class="mr-3 img-fluid rounded-circle" src="{% static 'image/female_avatar.jpg'%}" alt="" width="36" height="36">
-                        {{request.user}}
                         {% else %}
                         <img class="mr-3 img-fluid rounded-circle" src="{% static 'image/male_avatar.jpg'%}" alt="" width="36" height="36">
-                        {{request.user}}
                         {% endif %}
                         {% endif %}
                     </a>
-                    <div class="dropdown-menu w-auto p-3" style="padding-top : 0px !important;" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu w-auto p-3 dropdown-menu-right" style="padding-top : 0px !important;" aria-labelledby="navbarDropdownMenuLink">
                         {% if profile.avatar %}
                         <a href="#">
                             <img class="img-fluid rounded-circle dropdown-avatar" src="/media/{{ profile.avatar }}" alt="">

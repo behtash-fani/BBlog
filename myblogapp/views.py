@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
-from .models import Post,Category,Profile
+from .models import Post,Category,Profile,Controlpanel
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
@@ -13,12 +13,12 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-def category_list(request):
-    categories = Category.objects.all()
-    context={
-        'categories' : categories
-    }
-    return render(request, 'sidebar.html', context)
+# def category_list(request):
+#     categories = Category.objects.all()
+#     context={
+#         'categories' : categories
+#     }
+#     return render(request, 'sidebar.html', context)
 
 def category_detail(request, category_slug):
     categories = Category.objects.all()
@@ -60,9 +60,10 @@ def profile_edit(request,slug=None):
 
 
 def post_list(request):
-    categories = Category.objects.all()
+    # categories = Category.objects.all()
     # user = request.user
-    instance = get_object_or_404(Post)
+    # instance = get_object_or_404(Post)
+    # instance = Post.objects.all()
     try:
         post_list = Post.objects.filter(draft=False).filter(publish__lte = timezone.now()).order_by('-timestamp')
         query = request.GET.get("q")
@@ -75,11 +76,11 @@ def post_list(request):
         posts = paginator.get_page(page_number)
     except:
          return HttpResponse('No Posts.')
-    author = instance.author
+    # author = instance.author
     context = {
             'posts' : posts,
-            'categories' : categories,
-            'author' : author,
+            # 'categories' : categories,
+            # 'author' : author,    
         }
     return render(request, 'post_list.html', context)
 

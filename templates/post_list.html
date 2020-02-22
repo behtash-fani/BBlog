@@ -15,9 +15,16 @@
             <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
         </div>
         <div class="card-footer text-muted">
-            created at {{post.timestamp|timesince}} ago {% if post.author.get_full_name %}
-            <span class="lead">by {{post.author.get_full_name }}</span> {% else %}
-            <span class="lead">by <a href="{% url 'user_profile' author=post.author %}">{{post.author}}</a></span> {% endif %}
+            created at {{post.timestamp|timesince}} ago 
+            {% if post.author.get_full_name %}
+                <span class="lead">
+                    by <a href="{% url 'user_profile' author=post.author %}">{{post.author.get_full_name }}</a>
+                </span> 
+            {% else %}
+                <span class="lead">
+                    by <a href="{% url 'user_profile' author=post.author %}">{{post.author}}</a>
+                </span> 
+            {% endif %}
         </div>
     </div>
     {% endfor %} 
