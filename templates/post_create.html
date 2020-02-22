@@ -1,13 +1,14 @@
-{% extends "base.html" %} {% load crispy_forms_tags %}
-<!-- {% block head_extra %}
+{% extends "base.html" %} 
+{% load crispy_forms_tags %}
+{% block head_extra %}
 {{form.media}}
-{% endblock head_extra %} -->
+{% endblock head_extra %}
 
 {% block content %}
 <div class="wrapper">
-    <div class="card" style="width: 40rem;padding: 20px;">
-        <div class="card-header" style="margin-bottom: 15px;">
-            <h3>Please send your post</h3>
+    <div class="card postcreate">
+        <div class="card-header">
+            <h3>Please send your post:</h3>
         </div>
         <form method="POST" action='' enctype="multipart/form-data">
             {% csrf_token %} {{ form | crispy }}

@@ -83,3 +83,14 @@ li a.nav-link {
 .userprofile::after {
     display:none !important;
 }
+
+.postcreate,.postupdate
+{
+    width: 40rem;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+.postcreate .card-header,.postupdate .card-header
+{
+    margin-bottom: 15px;
+}

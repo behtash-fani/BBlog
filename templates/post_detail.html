@@ -15,7 +15,7 @@
     <hr>
     <p class="lead content-markdown post-detail-item">{{instance.content}}</p>
     <hr> {% if request.user == instance.author %}
-    <a href="{% url 'post_update' instance.slug %}" class="btn btn-primary">Update</a>
+    <a href="{% url 'post_update' instance.slug %}" class="btn btn-primary btn-raised">Update</a>
     <a href="{% url 'post_delete' id=instance.id %}" class="btn btn-danger" style="float: right;">Delete</a>
     <hr> {% endif %}
     
