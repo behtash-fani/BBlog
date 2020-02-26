@@ -25,9 +25,29 @@ def category_detail(request, category_slug):
     return render(request, 'post_list.html', context)
 
 def user_profile(request, author):
-    profile = Profile.objects.get(author__username=author) 
+    comment_count = []
+    postlist = []
+    posts = Post.objects.filter(author__username=author)
+    for post in posts:
+        postlist.append(post)
+        comment_count.append(Comments.objects.filter(post_title=post, reply=None).count())
+    postcomment = dict(zip(postlist, comment_count))
+    profile = Profile.objects.get(author__username=author)
+
+    form = ProfileForm(request.POST or None, request.FILES or None, instance=profile)
+    if form.is_valid():
+        profile = form.save(commit=False)
+        profile.save()
+        messages.success(request , "Your changes have been made")
+        return HttpResponseRedirect(profile.get_absolute_url())
+
+
+
+
     context ={
-        'profile' : profile
+        'profile' : profile,
+        'postcomment' : postcomment,
+        'form' : form
     }
     return render(request, 'registration/profile.html', context)
 

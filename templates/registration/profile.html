@@ -4,65 +4,75 @@
 {% block head_title %}{{profile.author}} | {{block.super}}{% endblock head_title %} 
 {% block content %}
 
-<article class="resume-wrapper card" style="margin-top: 30px;">
-    <div class="text-left">
-        <header class="resume-header pt-4 pt-md-0">
-            <div class="media flex-column flex-md-row">
-                {% if profile.avatar %} 
-                    <img class="mr-3 img-fluid picture " src="/media/{{ profile.avatar }}" alt=""> 
-                    {% if request.user == profile.author %}
-                    <a href="{% url 'profile_edit' slug=profile.slug %}" class="editicon"><i class="far fa-edit "></i> Edit</a> 
-                    {% endif %} 
-                {% else %}
-                {% if profile.gender == 'Female' %}
-                    <img class="mr-3 img-fluid picture " src="{% static 'image/female_avatar.jpg'%}" alt="">
-                {% else %}
-                    <img class="mr-3 img-fluid picture " src="{% static 'image/male_avatar.jpg'%}" alt="" >
+<div class="container">
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Aticles</a>
+                {% if user.is_authenticated and user == profile.author %}
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Account Settings</a>
                 {% endif %}
-                {% if request.user == profile.author %}
-                <a href="{% url 'profile_edit' slug=profile.slug %}" class="editicon"><i class="far fa-edit "></i> Edit</a> {% endif %} {% endif %}
-
-                <div class="media-body p-4 d-flex flex-column flex-md-row mx-auto mx-lg-0 ">
-                    <div class="primary-info ">
-                        <h1 class="name mt-0 mb-1 text-uppercase text-uppercase ">{{profile.author}}</h1>
-                        <div class="title mb-3 "><a href=" ">Type Your Position</a></div>
-                        <ul class="list-unstyled ">
-                            {% if profile.email %}
-                            <li class="mb-2 "><a href="# "><i class="far fa-envelope fa-fw mr-2 " data-fa-transform="grow-3"></i>{{profile.email}}</a></li>
-                            {% else %}
-                            <li class="mb-2 "><a href="# "><i class="far fa-envelope fa-fw mr-2 " data-fa-transform="grow-3"></i>Submit your email</a></li>
-                            {% endif %} {% if profile.website %}
-                            <li><a href="# "><span class="fa-container text-center mr-2 "><i class="fas fa-globe "></i></span>{{profile.website}}</a></li>
-                            {% else %}
-                            <li><a href="# "><span class="fa-container text-center mr-2 "><i class="fas fa-globe "></i></span>Submit your website</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                    <div class="secondary-info ml-md-auto mt-2 ">
-                        <ul class="resume-social list-unstyled ">
-                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-linkedin-in fa-fw "></i></span>linkedin.com/in/{{profile.author}}</a></li>
-                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-github-alt fa-fw "></i></span>github.com/{{profile.author}}</a></li>
-                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-codepen fa-fw "></i></span>codepen.io/{{profile.author}}</a></li>
-                            <li class="mb-3 "><a href="#"><span class="fa-container text-center mr-2 "><i class="fab fa-instagram "></i></span>instagram.com/{{profile.author}}/</a></li>
-                        </ul>
-                    </div>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active text-center" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    {% if profile.avatar %} 
+                    <img class="profile-avatar" src="/media/{{ profile.avatar }}" alt="" >
+                    {% else %}
+                    {% if profile.gender == 'Female' %}
+                        <img class="profile-avatar" src="{% static 'image/female_avatar.jpg'%}" alt="">
+                    {% else %}
+                        <img class="profile-avatar" src="{% static 'image/male_avatar.jpg'%}" alt="" >
+                    {% endif %}
+                    {% endif %}
+                    <p class="profile-author">Welcome, {{profile.author}}</p>
+                    {% if profile.email %}
+                    <span>Email: <a href="mailto:{{profile.email}}">{{profile.email}}</a></span>
+                    {% endif %}
+                    <div class="info-divider"></div>
+                    {% if profile.website %}
+                    <span>Website: <a href="{{profile.website}}">{{profile.website}}</a></span>
+                    {% endif %}
+                    <div class="info-divider"></div>
+                    {% if profile.bio %}
+                    <p>Bio : {{profile.bio}}</p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Views</th>
+                            <th scope="col">Comments</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for post,comment in postcomment.items %}
+                        <tr>
+                            <th scope="row">{{post.id}}</th>
+                            <td><a href="{{ post.get_absolute_url }}">{{post.title}}</a></td>
+                            <td>1234</td>
+                            <td>{{comment}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table> 
+                </div>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">Fugiat id quis dolor culpa eiusmod anim velit excepteur proident dolor aute qui magna. Ad proident laboris ullamco esse anim Lorem Lorem veniam quis Lorem irure occaecat velit nostrud magna nulla. Velit et et proident Lorem do ea tempor officia dolor. Reprehenderit Lorem aliquip labore est magna commodo est ea veniam consectetur.</div>                
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    <form method="POST" action='' enctype="multipart/form-data">
+                        {% csrf_token %} {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary btn-raised">Update</button>
+                        <button class="btn btn-default" onclick="javascript:history.back();">Cancel</button>
+                    </form>
                 </div>
             </div>
-        </header>
-
-        <div class="resume-body p-5">
-            <section class="resume-section summary-section mb-5 ">
-                <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3 ">Biography</h2>
-                {% if profile.bio %}
-                <div class="resume-section-content">
-                    <p class="mb-0">{{profile.bio}}</p>
-                </div>
-                {% else %}
-                <p class="mb-0">Please write about yourself...<a href="{% url 'profile_edit' slug=profile.slug %}" class="btn btn-primary">Start</a></p>
-                {% endif %}
-            </section>
         </div>
-
     </div>
-</article>
+</div>
 {% endblock %}

@@ -58,13 +58,11 @@
                             {% if profile.author.get_full_name %}
                             <a href="{% url 'user_profile' author=profile.author %}"><h5 class="text-center">{{profile.author.get_full_name}}</h5></a>
                             {% else %}
-                            <h4 class="text-center">{{profile.author}}</h4>
+                            <a href="{% url 'user_profile' author=profile.author %}"><h4 class="text-center">{{profile.author}}</h4></a>
                             {% endif %}
                             <p class="text-center">{{profile.email}}</p>
                         </span>
-                        <!-- {% if request.user == profile.author %} -->
-                        <a class="btn btn-raised manage-acc-btn" href="{% url 'profile_edit' slug=profile.slug %}">Manage Your Account</a>
-                        <!-- {% endif %} -->
+                        <a class="btn btn-raised manage-acc-btn" href="{% url 'user_profile' author=profile.author %}">Manage Your Account</a>
                         <div class="dropdown-divider"></div>
                         <a class="btn btn-raised btn-danger logoutbtn" href="{% url 'auth_logout' %}">Logout</a>
                     </div>

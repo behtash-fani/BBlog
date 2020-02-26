@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect,Http404
 from django.shortcuts import get_object_or_404
-from .models import Profile,Controlpanel,Category
+from .models import Profile,Controlpanel,Category,Post
 
 
 
