@@ -96,6 +96,18 @@ def pre_save_post_reciever(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_post_reciever, sender=Post)
 
 
+class Comments(models.Model):
+    post_title = models.ForeignKey(Post,blank=True, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile,blank=True, null=True, on_delete=models.CASCADE)
+    content = models.TextField()
+    reply = models.ForeignKey('self' , blank=True ,null=True , related_name='replies',on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now = False, auto_now_add= True,blank=True,null=True)
+    
+    def __str__(self):
+        return "%s - %s" % (str(self.post_title),self.user)
+
+
+
 class Controlpanel(models.Model):
     profile_name=models.CharField(max_length=255,blank=True)
     favicon = models.FileField(null=True, blank=True)

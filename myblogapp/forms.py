@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post,Profile
+from .models import Post,Profile,Comments
 from froala_editor.widgets import FroalaEditor
 
 
@@ -16,4 +16,9 @@ class PostForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['email','avatar','website','bio']
+        fields = ['email','avatar','website','bio','gender']
+    
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['content',]

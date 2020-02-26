@@ -1,10 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post,Category,Profile,Controlpanel
+from .models import Post,Category,Profile,Controlpanel,Comments
 from django.template.response import TemplateResponse
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from .forms import PostForm,ProfileForm
+from .forms import PostForm,ProfileForm,CommentForm
 from django.utils.text import slugify
 from django.contrib import messages
 from django.utils import timezone
@@ -69,14 +69,31 @@ def post_list(request):
     return render(request, 'post_list.html', context)
 
 def post_detail(request, slug=None):
+    currentUser = request.user
     categories = Category.objects.all()
     instance = get_object_or_404(Post, slug=slug)
+    comments = Comments.objects.filter(post_title=instance.id, reply=None).order_by('-id')
     if instance.draft or instance.publish > timezone.now().date():
         raise Http404
+
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        reply_id = request.POST.get('comment_id')
+        comments_qs = None
+        if reply_id:
+            comments_qs = Comments.objects.get(id=reply_id)
+        comments = form.save(commit=False)
+        comments.user = Profile.objects.get(author__username=currentUser)
+        comments.post_title = instance
+        comments.reply = comments_qs
+        comments.save()
+        return HttpResponseRedirect(instance.get_absolute_url())
     context = {
         'title' : instance.title,
         'instance' : instance,
         'categories' : categories,
+        'comments' : comments,
+        'form' : form
     }
     return render(request, 'post_detail.html', context)
 
@@ -118,3 +135,10 @@ def post_delete(request,id=None):
     instance = get_object_or_404(Post,id=id)
     instance.delete()
     return redirect('/')
+
+
+def comment_delete(request,commentid=None,postid=None):
+    instance = get_object_or_404(Post, id=postid)
+    comment = get_object_or_404(Comments,id=commentid)
+    comment.delete()
+    return HttpResponseRedirect(instance.get_absolute_url())

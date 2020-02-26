@@ -33,8 +33,6 @@
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/bootstrap-material-design.js' %}"></script>
     <script src="{% static 'js/fontawesome.js' %}"></script>
-
-
     <script src="{% static 'js/marked.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -53,6 +51,9 @@
                     $('.manage-acc-btn').removeClass('active');
                 }
             });
+            $(".reply-btn").click(function(){
+                $(this).parent().parent().next().next().fadeToggle()
+            })
         })
     </script>
 </body>
