@@ -25,31 +25,66 @@ def category_detail(request, category_slug):
     return render(request, 'post_list.html', context)
 
 def user_profile(request, author):
+    currentUser = request.user
     comment_count = []
     postlist = []
     posts = Post.objects.filter(author__username=author)
+    postform = PostForm(request.POST or None, request.FILES or None)
+    if postform.is_valid():
+        instance = postform.save(commit=False)
+        instance.author = currentUser
+        instance.save()
+        return HttpResponseRedirect(instance.get_absolute_url())
+        messages.success(request , "Your new post have been made")
     for post in posts:
         postlist.append(post)
         comment_count.append(Comments.objects.filter(post_title=post, reply=None).count())
     postcomment = dict(zip(postlist, comment_count))
     profile = Profile.objects.get(author__username=author)
-
     form = ProfileForm(request.POST or None, request.FILES or None, instance=profile)
     if form.is_valid():
         profile = form.save(commit=False)
         profile.save()
         messages.success(request , "Your changes have been made")
         return HttpResponseRedirect(profile.get_absolute_url())
-
-
-
-
+    author_comment = Comments.objects.filter(user = profile)
     context ={
         'profile' : profile,
         'postcomment' : postcomment,
-        'form' : form
+        'form' : form,
+        'postform': postform,
+        'author_comment' : author_comment
     }
     return render(request, 'registration/profile.html', context)
+
+
+def post_create(request):
+    currentUser = request.user
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    form = PostForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.author = currentUser
+        instance.save()
+        return HttpResponseRedirect(instance.get_absolute_url())
+        messages.success(request , "Your new post have been made")
+    context = {
+        'form' : form,
+    }
+    return render(request, 'post_create.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
 
 def profile_edit(request,slug=None):
     profile = get_object_or_404(Profile, slug=slug)
@@ -117,21 +152,7 @@ def post_detail(request, slug=None):
     }
     return render(request, 'post_detail.html', context)
 
-def post_create(request):
-    currentUser = request.user
-    if not request.user.is_staff or not request.user.is_superuser:
-        raise Http404
-    form = PostForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.author = currentUser
-        instance.save()
-        return HttpResponseRedirect(instance.get_absolute_url())
-        messages.success(request , "Your new post have been made")
-    context = {
-        'form' : form,
-    }
-    return render(request, 'post_create.html', context)
+
 
 def post_update(request, slug=None):
     instance = get_object_or_404(Post, slug=slug)

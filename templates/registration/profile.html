@@ -3,15 +3,19 @@
 {% load crispy_forms_tags %} 
 {% block head_title %}{{profile.author}} | {{block.super}}{% endblock head_title %} 
 {% block content %}
+{% block head_extra %}
+{{form.media}}
+{% endblock head_extra %}
 
 <div class="container">
     <div class="row" style="margin-top: 30px;">
         <div class="col-2">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
-                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Aticles</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-article" role="tab" aria-controls="v-pills-profile" aria-selected="false">Aticles</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-newarticle" role="tab" aria-controls="v-pills-profile" aria-selected="false">Write Aticle</a>
                 {% if user.is_authenticated and user == profile.author %}
-                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-messages" aria-selected="false">Comments</a>
                 <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Account Settings</a>
                 {% endif %}
             </div>
@@ -41,7 +45,7 @@
                     <p>Bio : {{profile.bio}}</p>
                     {% endif %}
                 </div>
-                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <div class="tab-pane fade" id="v-pills-article" role="tabpanel" aria-labelledby="v-pills-article-tab">
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
@@ -52,18 +56,42 @@
                         </tr>
                         </thead>
                         <tbody>
-                            {% for post,comment in postcomment.items %}
-                        <tr>
-                            <th scope="row">{{post.id}}</th>
-                            <td><a href="{{ post.get_absolute_url }}">{{post.title}}</a></td>
-                            <td>1234</td>
-                            <td>{{comment}}</td>
-                        </tr>
+                        {% for post,comment in postcomment.items %}
+                            <tr>
+                                <th scope="row">{{post.id}}</th>
+                                <td><a href="{{ post.get_absolute_url }}">{{post.title}}</a></td>
+                                <td>1234</td>
+                                <td>{{comment}}</td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table> 
                 </div>
-                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">Fugiat id quis dolor culpa eiusmod anim velit excepteur proident dolor aute qui magna. Ad proident laboris ullamco esse anim Lorem Lorem veniam quis Lorem irure occaecat velit nostrud magna nulla. Velit et et proident Lorem do ea tempor officia dolor. Reprehenderit Lorem aliquip labore est magna commodo est ea veniam consectetur.</div>                
+                <div class="tab-pane fade" id="v-pills-newarticle" role="tabpanel" aria-labelledby="v-pills-newarticle-tab">
+                    <form method="POST" action='' enctype="multipart/form-data">
+                        {% csrf_token %} {{ postform | crispy }}
+                        <input type="submit" value="Send" class="btn btn-primary btn-raised">
+                        <a href="/" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
+                    <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">Comment</th>
+                            <th scope="col">Post Title</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for cm in author_comment %}
+                          <tr>
+                            <td style='width: 80%'>{{cm.content}}</td>
+                            <td><a href="{{ cm.post_title.get_absolute_url }}">{{cm.post_title}}</a></td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                </div>                
                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                     <form method="POST" action='' enctype="multipart/form-data">
                         {% csrf_token %} {{ form|crispy }}
